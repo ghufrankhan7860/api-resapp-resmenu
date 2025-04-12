@@ -1,10 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-app.use(cors({
-    origin: ['http://localhost:1234', 'https://res-list-app.netlify.app/'],
-    credentials: true
-}));
+app.use(cors());
 
 const port = 4000;
 
