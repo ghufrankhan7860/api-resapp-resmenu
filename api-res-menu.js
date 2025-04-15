@@ -5,8 +5,8 @@ app.use(cors());
 
 const port = 4000;
 
-const getMenu = async (resId)=>{
-    const data = await fetch(`https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.624462&lng=77.057731&restaurantId=${resId}&catalog_qa=undefined&submitAction=ENTER`,
+const getMenu = async (lat, lon, resId)=>{
+    const data = await fetch(`https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=${lat}&lng=${lon}&restaurantId=${resId}&catalog_qa=undefined&submitAction=ENTER`,
         {
             headers: {
                 "User-Agent": "Mozilla/5.0"
@@ -18,11 +18,12 @@ const getMenu = async (resId)=>{
     return json;
 }
 
-app.get('/:resId', async (req, res)=>{
-    const resId = req.params.resId;
+app.get('/', async (req, res)=>{
+    const {resId, lat, lon} = req.query;
+    console.log({resId, lat, lon});
     
     try {
-        const data = await getMenu(resId);
+        const data = await getMenu(lat, lon, resId);
         res.json(data);
     } catch (error) {
         console.error("Error fetching menu:", error);
